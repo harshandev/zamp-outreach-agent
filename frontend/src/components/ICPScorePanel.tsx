@@ -71,19 +71,23 @@ export default function ICPScorePanel({ icp }: { icp: Record<string, unknown> })
       </div>
 
       {/* Risk flags */}
-      {(icp.risk_flags as string[] ?? []).length > 0 ? (
-        <div className="card p-4 border-l-4 border-l-amber-400 bg-amber-50">
-          <div className="flex items-center gap-2 mb-2">
-            <AlertTriangle size={14} className="text-amber-600" />
-            <span className="text-xs font-semibold text-amber-700">Risk Flags</span>
+      {(() => {
+        const flags = (icp.risk_flags as string[]) ?? []
+        if (!flags.length) return null
+        return (
+          <div className="card p-4 border-l-4 border-l-amber-400 bg-amber-50">
+            <div className="flex items-center gap-2 mb-2">
+              <AlertTriangle size={14} className="text-amber-600" />
+              <span className="text-xs font-semibold text-amber-700">Risk Flags</span>
+            </div>
+            <ul className="space-y-1">
+              {flags.map((flag, i) => (
+                <li key={i} className="text-xs text-amber-700">• {flag}</li>
+              ))}
+            </ul>
           </div>
-          <ul className="space-y-1">
-            {(icp.risk_flags as string[]).map((flag, i) => (
-              <li key={i} className="text-xs text-amber-700">• {flag}</li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+        )
+      })()}
     </div>
   )
 }

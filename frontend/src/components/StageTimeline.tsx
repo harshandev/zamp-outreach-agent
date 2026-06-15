@@ -64,26 +64,36 @@ export default function StageTimeline({ events }: { events: StageEvent[] }) {
               <p className="text-sm text-gray-500 mt-0.5 leading-snug">{event.message}</p>
 
               {/* Extra data pills */}
-              {event.stage === 'signal_extraction' && event.data?.signals && (
-                <div className="flex flex-wrap gap-1.5 mt-2">
-                  {(event.data.signals as Array<{type: string; relevance_score: number}>).map((s, idx) => (
-                    <span key={idx} className="badge bg-purple-50 text-purple-700 border border-purple-100">
-                      {s.type} · {(s.relevance_score * 100).toFixed(0)}%
-                    </span>
-                  ))}
-                </div>
-              )}
-              {event.stage === 'quality_scoring' && event.data?.score && (
-                <div className="mt-2 flex items-center gap-2">
-                  <div className="flex-1 bg-gray-100 rounded-full h-1.5">
-                    <div
-                      className={clsx('h-1.5 rounded-full transition-all', (event.data.score as number) >= 7 ? 'bg-green-500' : 'bg-amber-400')}
-                      style={{ width: `${((event.data.score as number) / 10) * 100}%` }}
-                    />
-                  </div>
-                  <span className="text-xs font-semibold text-gray-700">{(event.data.score as number).toFixed(1)}/10</span>
-                </div>
-              )}
+              {(() => {
+                const d = event.data as Record<string, unknown> | undefined
+                if (event.stage === 'signal_extraction' && d?.signals) {
+                  const signals = d.signals as Array<{type: string; relevance_score: number}>
+                  return (
+                    <div className="flex flex-wrap gap-1.5 mt-2">
+                      {signals.map((s, idx) => (
+                        <span key={idx} className="badge bg-purple-50 text-purple-700 border border-purple-100">
+                          {s.type} · {(s.relevance_score * 100).toFixed(0)}%
+                        </span>
+                      ))}
+                    </div>
+                  )
+                }
+                if (event.stage === 'quality_scoring' && d?.score) {
+                  const score = d.score as number
+                  return (
+                    <div className="mt-2 flex items-center gap-2">
+                      <div className="flex-1 bg-gray-100 rounded-full h-1.5">
+                        <div
+                          className={clsx('h-1.5 rounded-full transition-all', score >= 7 ? 'bg-green-500' : 'bg-amber-400')}
+                          style={{ width: `${(score / 10) * 100}%` }}
+                        />
+                      </div>
+                      <span className="text-xs font-semibold text-gray-700">{score.toFixed(1)}/10</span>
+                    </div>
+                  )
+                }
+                return null
+              })()}
             </div>
           </div>
         )

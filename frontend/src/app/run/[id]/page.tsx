@@ -84,7 +84,7 @@ export default function RunPage() {
   const icp = (run as unknown as Record<string, unknown>)?.icp_breakdown as Record<string, unknown> ?? {}
   const competitor = (run as unknown as Record<string, unknown>)?.competitor_intel as Record<string, unknown> ?? {}
   const citations = (run as unknown as Record<string, unknown>)?.citations as Array<{claim:string;source:string;url:string;date:string}> ?? []
-  const compliance = (run as unknown as Record<string, unknown>)?.compliance as Record<string, unknown> ?? {}
+  const compliance = (run as unknown as Record<string, unknown>)?.compliance as Record<string, string> ?? {}
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center">

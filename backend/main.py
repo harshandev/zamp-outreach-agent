@@ -22,7 +22,13 @@ app = FastAPI(title="Zamp Outreach Agent", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.frontend_url, "http://localhost:3000", "http://localhost:3001"],
+    allow_origins=[
+        settings.frontend_url,
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "https://zamp-outreach-agent.vercel.app",
+    ],
+    allow_origin_regex=r"https://zamp-outreach-agent.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

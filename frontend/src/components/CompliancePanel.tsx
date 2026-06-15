@@ -2,13 +2,24 @@
 import { ShieldCheck, ShieldAlert, ShieldX, CheckCircle, XCircle, Lightbulb } from 'lucide-react'
 import clsx from 'clsx'
 
+interface ComplianceData {
+  passed?: boolean
+  risk_level?: string
+  issues?: string[]
+  suggestions?: string[]
+  can_spam_compliant?: boolean
+  false_claims_detected?: boolean
+  gdpr_notes?: string
+}
+
 export default function CompliancePanel({ compliance }: { compliance: Record<string, unknown> }) {
   if (!compliance || Object.keys(compliance).length === 0) return null
 
-  const passed = compliance.passed as boolean
-  const risk = compliance.risk_level as string ?? 'low'
-  const issues = compliance.issues as string[] ?? []
-  const suggestions = compliance.suggestions as string[] ?? []
+  const data = compliance as ComplianceData
+  const passed = data.passed ?? true
+  const risk = data.risk_level ?? 'low'
+  const issues = data.issues ?? []
+  const suggestions = data.suggestions ?? []
 
   const RISK_CONFIG = {
     low:    { label: 'Low Risk',    classes: 'bg-green-50 text-green-800 border-green-200', icon: <ShieldCheck size={16} className="text-green-600" /> },
@@ -35,8 +46,8 @@ export default function CompliancePanel({ compliance }: { compliance: Record<str
         <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Compliance Checks</h3>
         <div className="space-y-2">
           {[
-            { label: 'CAN-SPAM Compliant', value: compliance.can_spam_compliant as boolean },
-            { label: 'No False Claims', value: !(compliance.false_claims_detected as boolean) },
+            { label: 'CAN-SPAM Compliant', value: data.can_spam_compliant ?? true },
+            { label: 'No False Claims', value: !(data.false_claims_detected ?? false) },
             { label: 'GDPR Safe', value: risk !== 'high' },
           ].map(({ label, value }) => (
             <div key={label} className="flex items-center gap-2">
@@ -47,13 +58,13 @@ export default function CompliancePanel({ compliance }: { compliance: Record<str
             </div>
           ))}
         </div>
-        {compliance.gdpr_notes && (
-          <p className="text-xs text-gray-400 mt-3">{compliance.gdpr_notes as string}</p>
+        {data.gdpr_notes && (
+          <p className="text-xs text-gray-400 mt-3">{data.gdpr_notes}</p>
         )}
       </div>
 
       {/* Issues */}
-      {issues.length > 0 ? (
+      {issues.length > 0 && (
         <div className="card p-4 border-l-4 border-l-red-400 bg-red-50">
           <h3 className="text-xs font-semibold text-red-700 mb-2">Issues Found</h3>
           <ul className="space-y-1">
@@ -62,10 +73,10 @@ export default function CompliancePanel({ compliance }: { compliance: Record<str
             ))}
           </ul>
         </div>
-      ) : null}
+      )}
 
       {/* Suggestions */}
-      {suggestions.length > 0 ? (
+      {suggestions.length > 0 && (
         <div className="card p-4 bg-blue-50 border-l-4 border-l-blue-400">
           <div className="flex items-center gap-2 mb-2">
             <Lightbulb size={13} className="text-blue-600" />
@@ -77,7 +88,7 @@ export default function CompliancePanel({ compliance }: { compliance: Record<str
             ))}
           </ul>
         </div>
-      ) : null}
+      )}
     </div>
   )
 }

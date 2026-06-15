@@ -20,7 +20,7 @@ export default function CompetitorIntelPanel({ intel }: { intel: Record<string, 
   return (
     <div className="space-y-4 animate-slide-up">
       {/* Competitors detected */}
-      {competitors.length > 0 && (
+      {competitors.length > 0 ? (
         <div className="card p-4">
           <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Competitors Detected</h3>
           <div className="flex flex-wrap gap-2">
@@ -36,7 +36,7 @@ export default function CompetitorIntelPanel({ intel }: { intel: Record<string, 
             </p>
           )}
         </div>
-      )}
+      ) : null}
 
       {/* Competitive hook */}
       {intel.competitive_hook && (

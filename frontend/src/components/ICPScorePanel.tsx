@@ -71,7 +71,7 @@ export default function ICPScorePanel({ icp }: { icp: Record<string, unknown> })
       </div>
 
       {/* Risk flags */}
-      {(icp.risk_flags as string[] ?? []).length > 0 && (
+      {(icp.risk_flags as string[] ?? []).length > 0 ? (
         <div className="card p-4 border-l-4 border-l-amber-400 bg-amber-50">
           <div className="flex items-center gap-2 mb-2">
             <AlertTriangle size={14} className="text-amber-600" />
@@ -83,7 +83,7 @@ export default function ICPScorePanel({ icp }: { icp: Record<string, unknown> })
             ))}
           </ul>
         </div>
-      )}
+      ) : null}
     </div>
   )
 }

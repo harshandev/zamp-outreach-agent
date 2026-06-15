@@ -53,7 +53,7 @@ export default function CompliancePanel({ compliance }: { compliance: Record<str
       </div>
 
       {/* Issues */}
-      {issues.length > 0 && (
+      {issues.length > 0 ? (
         <div className="card p-4 border-l-4 border-l-red-400 bg-red-50">
           <h3 className="text-xs font-semibold text-red-700 mb-2">Issues Found</h3>
           <ul className="space-y-1">
@@ -62,10 +62,10 @@ export default function CompliancePanel({ compliance }: { compliance: Record<str
             ))}
           </ul>
         </div>
-      )}
+      ) : null}
 
       {/* Suggestions */}
-      {suggestions.length > 0 && (
+      {suggestions.length > 0 ? (
         <div className="card p-4 bg-blue-50 border-l-4 border-l-blue-400">
           <div className="flex items-center gap-2 mb-2">
             <Lightbulb size={13} className="text-blue-600" />
@@ -77,7 +77,7 @@ export default function CompliancePanel({ compliance }: { compliance: Record<str
             ))}
           </ul>
         </div>
-      )}
+      ) : null}
     </div>
   )
 }
